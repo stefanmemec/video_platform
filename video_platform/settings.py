@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'videos',
+    'cloudinary',
+    'cloudinary_storage',
 
 ]
 
@@ -129,3 +131,9 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/videos/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'Root',
+    'API_KEY': '794881469728489',
+    'API_SECRET': 'I2Bs-OiKDbiTRVn1TfxM1YNHHeQ',
+}
