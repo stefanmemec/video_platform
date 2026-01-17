@@ -7,13 +7,16 @@
 <h1>All Videos</h1>
 
 {% for video in videos %}
-  <h3>{{ video.title }}</h3>
-  <p>Uploaded by: {{ video.user.username }}</p>
-  <video width="400" controls>
+  {% if video.file %}
+    <video width="320" height="240" controls>
       <source src="{{ video.file.url }}" type="video/mp4">
       Your browser does not support the video tag.
-  </video>
+    </video>
+  {% else %}
+    <p>No video available</p>
+  {% endif %}
 {% endfor %}
+
 
 
 <a href="{% url 'dashboard' %}">Back to Dashboard</a>
