@@ -1,0 +1,20 @@
+<h1>Dashboard – All Videos</h1>
+
+<p>Welcome, {{ request.user.username }}</p>
+
+<a href="{% url 'videos:my_profile' %}">
+    My Profile / Upload
+</a>
+
+<hr>
+
+{% for video in videos %}
+    <h3>{{ video.title }}</h3>
+    <p>Uploaded by: {{ video.user.username }}</p>
+
+    <video width="400" controls>
+        <source src="{{ video.file.url }}" type="video/mp4">
+    </video>
+
+    <hr>
+{% endfor %}

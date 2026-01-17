@@ -1,0 +1,27 @@
+<h1>My Profile</h1>
+
+<a href="{% url 'videos:dashboard' %}">
+    ← Back to dashboard
+</a>
+
+<h2>Upload new video</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+
+<hr>
+
+<h2>My Videos</h2>
+
+{% for video in my_videos %}
+    <h3>{{ video.title }}</h3>
+
+    <video width="400" controls>
+        <source src="{{ video.file.url }}">
+    </video>
+{% empty %}
+    <p>You haven't uploaded any videos yet.</p>
+{% endfor %}
