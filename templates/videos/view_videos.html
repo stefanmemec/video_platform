@@ -1,24 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Videos</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>All Videos</h1>
 
-{% for video in videos %}
-  {% if video.file %}
-    <video width="320" height="240" controls>
-      <source src="{{ video.file.url }}" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  {% else %}
-    <p>No video available</p>
-  {% endif %}
-{% endfor %}
+{% if videos %}
+  <div class="videos-container">
+    {% for video in videos %}
+      <div class="video-card" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+        <h3>{{ video.title }}</h3>
+        {% if video.description %}
+          <p>{{ video.description }}</p>
+        {% endif %}
 
+        {% if video.file %}
+          <video width="480" height="320" controls>
+            <source src="{{ video.file.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% else %}
+          <p><em>No video available</em></p>
+        {% endif %}
 
+        <p>Uploaded by: {{ video.user.username }}</p>
+        <p>Uploaded at: {{ video.uploaded_at|date:"M d, Y H:i" }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No videos uploaded yet.</p>
+{% endif %}
 
-<a href="{% url 'dashboard' %}">Back to Dashboard</a>
-</body>
-</html>
+{% endblock %}
