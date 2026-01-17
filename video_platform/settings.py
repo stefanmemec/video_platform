@@ -132,7 +132,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'Root',
+    'CLOUD_NAME': 'dhwvvccze',
     'API_KEY': '794881469728489',
     'API_SECRET': 'I2Bs-OiKDbiTRVn1TfxM1YNHHeQ',
 }
