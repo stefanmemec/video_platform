@@ -1,11 +1,14 @@
-<h1>My Profile</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
 
-<a href="{% url 'videos:dashboard' %}">
-    ← Back to dashboard
-</a>
+<a href="{% url 'videos:dashboard' %}">← Back to dashboard</a>
 
-<h2>Upload new video</h2>
-
+<h2>Upload New Video</h2>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
@@ -16,12 +19,23 @@
 
 <h2>My Videos</h2>
 
-{% for video in my_videos %}
-    <h3>{{ video.title }}</h3>
+{% if videos %}
+    {% for video in videos %}
+        <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
+            <h3>{{ video.title }}</h3>
 
-    <video width="400" controls>
-        <source src="{{ video.file.url }}">
-    </video>
-{% empty %}
+            {% if video.description %}
+                <p>{{ video.description }}</p>
+            {% endif %}
+
+            <video width="400" controls>
+                <source src="{{ video.file.url }}" type="video/mp4">
+            </video>
+        </div>
+    {% endfor %}
+{% else %}
     <p>You haven't uploaded any videos yet.</p>
-{% endfor %}
+{% endif %}
+
+</body>
+</html>
