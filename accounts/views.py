@@ -5,10 +5,17 @@ from django.contrib.auth import authenticate, login, logout
 def register_view(request):
     if request.method == "POST":
         username = request.POST['username']
-        password = request.POST['password']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
 
-        User.objects.create_user(username=username, password=password)
-        return redirect('login')
+        if password1 == password2:
+            if not User.objects.filter(username=username).exists():
+                user = User.objects.create_user(
+                    username=username,
+                    password=password1
+                )
+                login(request, user)
+                return redirect('dashboard')
 
     return render(request, 'accounts/register.html')
 
@@ -18,7 +25,6 @@ def login_view(request):
         password = request.POST['password']
 
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
             return redirect('dashboard')

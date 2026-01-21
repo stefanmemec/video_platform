@@ -6,7 +6,7 @@ from .models import Video
 from .forms import VideoForm
 
 
-@login_required
+@login_required(login_url='login')
 def dashboard(request):
     videos = Video.objects.all().order_by("-uploaded_at")
 
@@ -22,7 +22,7 @@ def dashboard(request):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def upload_video(request):
     if request.method == "POST":
         form = VideoForm(request.POST, request.FILES)
@@ -39,12 +39,17 @@ def upload_video(request):
     })
 
 
-@login_required
+@login_required(login_url='login')
 def my_profile(request):
     videos = Video.objects.filter(user=request.user).order_by("-uploaded_at")
-    form = VideoForm()
+
+    for video in videos:
+        video.video_url = cloudinary_url(
+            video.file.public_id,
+            resource_type="video",
+            format="mp4"
+        )[0]
 
     return render(request, "videos/my_profile.html", {
-        "videos": videos,
-        "form": form
+        "videos": videos
     })
