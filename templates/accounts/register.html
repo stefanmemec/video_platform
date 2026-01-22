@@ -1,20 +1,146 @@
-<h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Video Platform</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
 
-<form method="POST">
-    {% csrf_token %}
+        .register-container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
 
-    <input type="text" name="username" placeholder="Username" required>
-    <br>
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2575fc;
+        }
 
-    <input type="password" name="password1" placeholder="Password" required>
-    <br>
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
 
-    <input type="password" name="password2" placeholder="Confirm Password" required>
-    <br>
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 5px rgba(37,117,252,0.5);
+            outline: none;
+        }
 
-    <button type="submit">Register</button>
-</form>
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2575fc;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-<p>Already have an account?
-    <a href="{% url 'login' %}">Login</a>
-</p>
+        button:hover {
+            background-color: #6a11cb;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #6a11cb;
+        }
+
+        .error-message {
+            background-color: #ffe6e6;
+            color: #ff1a1a;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .show-password input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Register</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error-message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" id="password1" name="password1" placeholder="Password" required>
+        <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+
+        <div class="show-password">
+            <input type="checkbox" id="togglePassword">
+            <label for="togglePassword">Show Passwords</label>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+
+<script>
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const password1 = document.getElementById('password1');
+    const password2 = document.getElementById('password2');
+
+    togglePassword.addEventListener('change', function() {
+        const type = this.checked ? 'text' : 'password';
+        password1.type = type;
+        password2.type = type;
+    });
+</script>
+
+</body>
+</html>
