@@ -11,13 +11,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 # -------------------------------
 # Get secret key from environment, fallback for local dev
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret-key-for-dev')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Debug mode from env, default to False in production
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG') == 'True'
 
 # Hosts allowed
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS',"").split(',')
 
 # -------------------------------
 # Installed apps
@@ -113,17 +113,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dhwvvccze'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '794881469728489'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'I2Bs-OiKDbiTRVn1TfxM1YNHHeQ'),
+    'CLOUD_NAME': os.environ('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ('CLOUDINARY_API_SECRET'),
 }
 
-cloudinary.config(
-    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', 'dhwvvccze'),
-    api_key=os.environ.get('CLOUDINARY_API_KEY', '794881469728489'),
-    api_secret=os.environ.get('CLOUDINARY_API_SECRET', 'I2Bs-OiKDbiTRVn1TfxM1YNHHeQ'),
-    secure=True
-)
 
 # -------------------------------
 # Authentication redirects
