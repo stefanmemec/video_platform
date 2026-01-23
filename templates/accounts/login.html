@@ -23,12 +23,13 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
+            box-sizing: border-box; /* make padding included in width */
         }
 
         h2 {
             text-align: center;
             margin-bottom: 25px;
-            color: #2575fc;
+            color: #e936fd;
         }
 
         input[type="text"],
@@ -39,6 +40,7 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             transition: 0.3s;
+            box-sizing: border-box; /* ensures padding doesn’t overflow */
         }
 
         input[type="text"]:focus,
@@ -53,7 +55,7 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: #2575fc;
+            background-color: #e936fd;
             color: white;
             font-size: 16px;
             cursor: pointer;
@@ -70,7 +72,7 @@
         }
 
         a {
-            color: #2575fc;
+            color: #e936fd;
             text-decoration: none;
             font-weight: bold;
         }
@@ -113,7 +115,6 @@
 
     <form method="POST">
         {% csrf_token %}
-
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" id="password" name="password" placeholder="Password" required>
 
@@ -129,7 +130,6 @@
 </div>
 
 <script>
-    // Toggle password visibility
     const togglePassword = document.getElementById('togglePassword');
     const password = document.getElementById('password');
 
