@@ -1,41 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>My Profile</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #7b0f9f 0%, #c026d3 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.85;
+        }
+
+        a.back:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #a911cb, #e936fd);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        .video-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .video-card p {
+            font-size: 14px;
+            opacity: 0.85;
+            margin-bottom: 10px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .empty {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
-<a href="{% url 'videos:dashboard' %}">← Back to dashboard</a>
+<div class="container">
 
-<h2>Upload New Video</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
+    <a href="{% url 'videos:dashboard' %}" class="back">← Back to dashboard</a>
 
-<hr>
+    <div class="card">
+        <h2>Upload New Video</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
 
-<h2>My Videos</h2>
+    <div class="card">
+        <h2>My Videos</h2>
 
-{% if videos %}
-    {% for video in videos %}
-        <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
-            <h3>{{ video.title }}</h3>
+        {% if videos %}
+            <div class="video-grid">
+                {% for video in videos %}
+                    <div class="video-card">
+                        <h3>{{ video.title }}</h3>
 
-            {% if video.description %}
-                <p>{{ video.description }}</p>
-            {% endif %}
+                        {% if video.description %}
+                            <p>{{ video.description }}</p>
+                        {% endif %}
 
-            <video width="400" controls>
-                <source src="{{ video.file.url }}" type="video/mp4">
-            </video>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>You haven't uploaded any videos yet.</p>
-{% endif %}
+                        <video controls>
+                            <source src="{{ video.file.url }}" type="video/mp4">
+                        </video>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty">You haven't uploaded any videos yet.</p>
+        {% endif %}
+    </div>
+
+</div>
 
 </body>
 </html>

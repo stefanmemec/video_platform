@@ -1,35 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>All Videos</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #7b0f9f 0%, #c026d3 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.85;
+        }
+
+        a.back:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transition: transform 0.25s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .video-card h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .video-card p {
+            margin: 6px 0;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 6px;
+        }
+
+        .empty {
+            opacity: 0.8;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
-<a href="{% url 'videos:dashboard' %}">← Back</a>
+<div class="container">
 
-<h1>All Videos</h1>
+    <a href="{% url 'videos:dashboard' %}" class="back">← Back</a>
 
-{% if videos %}
-    {% for video in videos %}
-        <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
-            <h3>{{ video.title }}</h3>
+    <h1>All Videos</h1>
 
-            {% if video.description %}
-                <p>{{ video.description }}</p>
-            {% endif %}
+    {% if videos %}
+        <div class="video-grid">
+            {% for video in videos %}
+                <div class="video-card">
+                    <h3>{{ video.title }}</h3>
 
-            <video width="480" controls>
-                <source src="{{ video.file.url }}" type="video/mp4">
-            </video>
+                    {% if video.description %}
+                        <p>{{ video.description }}</p>
+                    {% endif %}
 
-            <p>Uploaded by {{ video.user.username }}</p>
-            <p>{{ video.uploaded_at|date:"M d, Y H:i" }}</p>
+                    <video controls>
+                        <source src="{{ video.file.url }}" type="video/mp4">
+                    </video>
+
+                    <div class="meta">
+                        <span>👤 {{ video.user.username }}</span>
+                        <span>📅 {{ video.uploaded_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-{% else %}
-    <p>No videos uploaded yet.</p>
-{% endif %}
+    {% else %}
+        <p class="empty">No videos uploaded yet.</p>
+    {% endif %}
+
+</div>
 
 </body>
 </html>

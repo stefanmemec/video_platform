@@ -1,16 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #a911cb 0%, #e936fd 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard {
+            width: 900px;
+            max-width: 95%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.02);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .card span {
+            display: block;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .icon {
+            font-size: 36px;
+        }
+
+        .logout {
+            background: rgba(220, 53, 69, 0.75);
+        }
+
+        .logout:hover {
+            background: rgba(220, 53, 69, 0.9);
+        }
+    </style>
 </head>
 <body>
 
-<h1>Hello {{ request.user.username }}</h1>
+<div class="dashboard">
+    <h1>Welcome back, {{ request.user.username }} ✨</h1>
 
-<a href="{% url 'logout' %}">Logout</a>
+    <div class="cards">
+        <a href="{% url 'videos:upload_video' %}" class="card">
+            <div class="icon">⬆️</div>
+            <span>Upload Video</span>
+        </a>
 
-<a href="{% url 'videos:upload_video' %}">Upload a Video</a>
-<a href="{% url 'videos:dashboard' %}">View All Videos</a>
-<a href="{% url 'videos:my_profile' %}">My Profile</a>
+        <a href="{% url 'videos:dashboard' %}" class="card">
+            <div class="icon">🎬</div>
+            <span>All Videos</span>
+        </a>
+
+        <a href="{% url 'videos:my_profile' %}" class="card">
+            <div class="icon">👤</div>
+            <span>My Profile</span>
+        </a>
+
+        <a href="{% url 'logout' %}" class="card logout">
+            <div class="icon">🚪</div>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
