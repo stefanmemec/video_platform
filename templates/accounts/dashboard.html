@@ -1,109 +1,181 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard – FlyClix</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        background: url("{% static 'images/arthur-edelmans-pVzebTGfYpk-unsplash.jpg' %}") no-repeat center center/cover;
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        overflow-x: hidden;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #a911cb 0%, #e936fd 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Overlay to improve readability */
+    .overlay {
+        background: rgba(0,0,0,0.55);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .dashboard {
-            width: 900px;
-            max-width: 95%;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-            color: white;
-        }
+    /* Top bar */
+    .top-bar {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 25px;
+        padding: 20px 40px;
+        font-weight: 600;
+        font-size: 18px;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.7s ease;
+    }
 
-        h1 {
-            margin-bottom: 30px;
-            font-size: 32px;
-            font-weight: 600;
-        }
+    .top-bar.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
+    .top-bar a {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        transition: 0.3s;
+        background: rgba(0,0,0,0.4);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.18);
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.25s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+    .top-bar a:hover {
+        background: rgba(106,17,203,0.8);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
 
-        .card:hover {
-            transform: translateY(-6px) scale(1.02);
-            background: rgba(255, 255, 255, 0.25);
-        }
+    /* Main content */
+    .main-content {
+        display: flex;
+        flex: 1;
+        padding: 40px;
+        gap: 40px;
+    }
 
-        .card span {
-            display: block;
-            font-size: 18px;
-            margin-top: 10px;
-        }
+    /* Left video */
+    .video-container {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
 
-        .icon {
-            font-size: 36px;
-        }
+    .video-container iframe, .video-container video {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+    }
 
-        .logout {
-            background: rgba(220, 53, 69, 0.75);
-        }
+    /* Right info / motivational text */
+    .info-box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        color: #ffffff;
+        gap: 25px;
+    }
 
-        .logout:hover {
-            background: rgba(220, 53, 69, 0.9);
-        }
-    </style>
+    .info-box h1 {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+
+    .info-box h2 {
+        font-size: 26px;
+        font-weight: 600;
+        color: #e0c3fc;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    }
+
+    .info-box p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ffffffcc;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* Motivational quote */
+    .info-box .quote {
+        font-size: 22px;
+        font-weight: 500;
+        font-style: italic;
+        color: #ffd700cc;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .main-content { flex-direction: column; gap: 30px; }
+        .info-box, .video-container { flex: none; width: 100%; height: 400px; }
+        .top-bar { flex-wrap: wrap; gap: 15px; padding: 15px 20px; font-size: 16px; }
+    }
+</style>
 </head>
+
 <body>
+<div class="overlay">
 
-<div class="dashboard">
-    <h1>Welcome back, {{ request.user.username }} ✨</h1>
-
-    <div class="cards">
-        <a href="{% url 'videos:upload_video' %}" class="card">
-            <div class="icon">⬆️</div>
-            <span>Upload Video</span>
-        </a>
-
-        <a href="{% url 'videos:dashboard' %}" class="card">
-            <div class="icon">🎬</div>
-            <span>All Videos</span>
-        </a>
-
-        <a href="{% url 'videos:my_profile' %}" class="card">
-            <div class="icon">👤</div>
-            <span>My Profile</span>
-        </a>
-
-        <a href="{% url 'logout' %}" class="card logout">
-            <div class="icon">🚪</div>
-            <span>Logout</span>
-        </a>
+    <!-- Top navigation / options -->
+    <div class="top-bar" id="topBar">
+        <a href="{% url 'videos:upload_video' %}">⬆️ Upload</a>
+        <a href="{% url 'videos:dashboard' %}">🎬 All Videos</a>
+        <a href="{% url 'videos:my_profile' %}">👤 Profile</a>
+        <a href="{% url 'logout' %}" style="background: rgba(220,53,69,0.75);">🚪 Logout</a>
     </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+
+        <!-- Left video container -->
+        <div class="video-container">
+            <!-- Replace src with your video URL -->
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <!-- Right info box -->
+        <div class="info-box">
+            <h1>Welcome back, {{ request.user.username }} ✨</h1>
+            <h2>Why FlyClix is the best</h2>
+            <p>FlyClix is your ultimate platform for sharing and discovering amazing sports moments. Trusted by athletes worldwide, we prioritize your content security and creativity. Upload, watch, and engage effortlessly!</p>
+            <p class="quote">"Success is the sum of small efforts repeated day in and day out." – Robert Collier</p>
+            <p>We help you grow, stay motivated, and inspire others. FlyClix is more than videos; it's a community where your passion shines.</p>
+        </div>
+
+    </div>
+
 </div>
+
+<script>
+    // Animate top bar after 1 second
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('topBar').classList.add('show');
+        }, 1000);
+    });
+</script>
 
 </body>
 </html>
