@@ -1,53 +1,65 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Video Platform</title>
+    <title>Register – FlyClix</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
+            height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #a911cb 0%, #e936fd 100%);
+            background: url("{% static 'images/backgroundforwebsite.avif' %}")
+                        no-repeat center center / cover;
+        }
+
+        /* Dark overlay */
+        .overlay {
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.55);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #333;
         }
 
+        /* Register box */
         .register-container {
-            background: #fff;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: #ffffff;
+            padding: 45px 40px;
+            border-radius: 16px;
             width: 100%;
-            max-width: 400px;
-            box-sizing: border-box; /* ensures padding is included in width */
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
         }
 
         h2 {
             text-align: center;
             margin-bottom: 25px;
-            color: #e936fd;
+            color: #333;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 14px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
             border-radius: 8px;
-            transition: 0.3s;
-            box-sizing: border-box; /* prevents touching container edges */
+            border: 1px solid #ccc;
+            font-size: 14px;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 5px rgba(37,117,252,0.5);
+        input:focus {
             outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 5px rgba(106,17,203,0.4);
         }
 
         button {
@@ -55,97 +67,100 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: #e936fd;
-            color: white;
+            background: #6a11cb;
+            color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
+            margin-top: 10px;
         }
 
         button:hover {
-            background-color: #6a11cb;
-        }
-
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        a {
-            color: #e936fd;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            color: #6a11cb;
-        }
-
-        .error-message {
-            background-color: #ffe6e6;
-            color: #ff1a1a;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            opacity: 0.9;
         }
 
         .show-password {
             display: flex;
             align-items: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .show-password input {
+            margin-right: 6px;
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 8px;
             margin-bottom: 15px;
             font-size: 14px;
         }
 
-        .show-password input[type="checkbox"] {
-            margin-right: 5px;
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KCBV48178J"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-KCBV48178J');
-</script>
+    <!-- Google tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCBV48178J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KCBV48178J');
+    </script>
 </head>
+
 <body>
 
-<div class="register-container">
-    <h2>Register</h2>
+<div class="overlay">
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error-message">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+    <div class="register-container">
+        <h2>Create Account</h2>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" id="password1" name="password1" placeholder="Password" required>
-        <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
-        <div class="show-password">
-            <input type="checkbox" id="togglePassword">
-            <label for="togglePassword">Show Passwords</label>
-        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" id="password1" name="password1" placeholder="Password" required>
+            <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
 
-        <button type="submit">Register</button>
-    </form>
+            <div class="show-password">
+                <input type="checkbox" id="togglePassword">
+                <label for="togglePassword">Show passwords</label>
+            </div>
 
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            <button type="submit">Register</button>
+        </form>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+
 </div>
 
 <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const password1 = document.getElementById('password1');
-    const password2 = document.getElementById('password2');
+    const togglePassword = document.getElementById("togglePassword");
+    const password1 = document.getElementById("password1");
+    const password2 = document.getElementById("password2");
 
-    togglePassword.addEventListener('change', function() {
-        const type = this.checked ? 'text' : 'password';
+    togglePassword.addEventListener("change", () => {
+        const type = togglePassword.checked ? "text" : "password";
         password1.type = type;
         password2.type = type;
     });
