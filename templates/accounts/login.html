@@ -1,53 +1,80 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Video Platform</title>
+    <title>Login – FlyClix</title>
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #a911cb 0%, #e936fd 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            color: #333;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{% static 'images/backgroundforwebsite.avif' %}") 
+                        no-repeat center center / cover;
+        }
+
+        /* Dark overlay for readability */
+        .overlay {
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            position: relative;
+        }
+
+        /* Top-left brand */
+        .brand {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Main layout */
+        .content {
+            display: flex;
+            height: 100%;
+            padding: 0 70px;
+        }
+
+        /* LEFT SIDE – LOGIN */
+        .left {
+            flex: 1;
+            display: flex;
+            align-items: center;
         }
 
         .login-container {
-            background: #fff;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 14px;
             width: 100%;
             max-width: 400px;
-            box-sizing: border-box; /* make padding included in width */
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
         }
 
-        h2 {
+        .login-container h2 {
             text-align: center;
             margin-bottom: 25px;
-            color: #e936fd;
+            color: #333;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 14px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
             border-radius: 8px;
-            transition: 0.3s;
-            box-sizing: border-box; /* ensures padding doesn’t overflow */
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 5px rgba(37,117,252,0.5);
-            outline: none;
+            border: 1px solid #ccc;
+            font-size: 14px;
         }
 
         button {
@@ -55,95 +82,140 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: #e936fd;
-            color: white;
+            background: #6a11cb;
+            color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #6a11cb;
-        }
-
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        a {
-            color: #e936fd;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            color: #6a11cb;
-        }
-
-        .error-message {
-            background-color: #ffe6e6;
-            color: #ff1a1a;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            opacity: 0.9;
         }
 
         .show-password {
             display: flex;
             align-items: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .show-password input {
+            margin-right: 6px;
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 8px;
             margin-bottom: 15px;
             font-size: 14px;
         }
 
-        .show-password input[type="checkbox"] {
-            margin-right: 5px;
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* RIGHT SIDE – INFO CARDS */
+        .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            padding-left: 60px;
+            color: #ffffff;
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            font-size: 16px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .content {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .right {
+                display: none;
+            }
+
+            .brand {
+                position: static;
+                text-align: center;
+                margin-bottom: 20px;
+            }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KCBV48178J"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KCBV48178J');
-</script>
 </head>
+
 <body>
 
-<div class="login-container">
-    <h2>Login</h2>
+<div class="overlay">
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error-message">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+    <div class="brand">Welcome to FlyClix</div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
+    <div class="content">
 
-        <div class="show-password">
-            <input type="checkbox" id="togglePassword">
-            <label for="togglePassword">Show Password</label>
+        <!-- LEFT -->
+        <div class="left">
+            <div class="login-container">
+                <h2>Login</h2>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="error-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+
+                    <div class="show-password">
+                        <input type="checkbox" id="togglePassword">
+                        <label for="togglePassword">Show password</label>
+                    </div>
+
+                    <button type="submit">Login</button>
+                </form>
+
+                <p>New here? <a href="{% url 'register' %}">Register</a></p>
+            </div>
         </div>
 
-        <button type="submit">Login</button>
-    </form>
+        <!-- RIGHT -->
+        <div class="right">
+            <div class="info-box">🚀 Share your best sports moments</div>
+            <div class="info-box">🎥 Upload highlights in seconds</div>
+            <div class="info-box">🔥 Built for athletes & creators</div>
+        </div>
 
-    <p>New here? <a href="{% url 'register' %}">Register</a></p>
+    </div>
 </div>
 
 <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const password = document.getElementById('password');
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
 
-    togglePassword.addEventListener('change', function() {
-        password.type = this.checked ? 'text' : 'password';
+    togglePassword.addEventListener("change", () => {
+        password.type = togglePassword.checked ? "text" : "password";
     });
 </script>
 
