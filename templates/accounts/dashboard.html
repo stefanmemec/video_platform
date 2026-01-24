@@ -8,6 +8,7 @@
 
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
         font-family: 'Poppins', sans-serif;
         min-height: 100vh;
@@ -18,13 +19,17 @@
         overflow-x: hidden;
     }
 
-    /* Overlay to improve readability */
+    /* FULL overlay from top to bottom */
     .overlay {
-        background: rgba(0,0,0,0.55);
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
+        background: rgba(0,0,0,0.55);
         display: flex;
         flex-direction: column;
+        z-index: 0;
     }
 
     /* Top bar */
@@ -39,6 +44,7 @@
         opacity: 0;
         transform: translateY(-20px);
         transition: all 0.7s ease;
+        z-index: 1;
     }
 
     .top-bar.show {
@@ -67,9 +73,11 @@
         flex: 1;
         padding: 40px;
         gap: 40px;
+        z-index: 1;
+        position: relative;
     }
 
-    /* Left video */
+    /* Swap positions: Text left, Video right */
     .video-container {
         flex: 1;
         background: rgba(255,255,255,0.05);
@@ -78,6 +86,7 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        order: 2; /* Video goes right */
     }
 
     .video-container iframe, .video-container video {
@@ -86,7 +95,6 @@
         border-radius: 20px;
     }
 
-    /* Right info / motivational text */
     .info-box {
         flex: 1;
         display: flex;
@@ -94,6 +102,7 @@
         justify-content: flex-start;
         color: #ffffff;
         gap: 25px;
+        order: 1; /* Text goes left */
     }
 
     .info-box h1 {
@@ -117,7 +126,6 @@
         text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
     }
 
-    /* Motivational quote */
     .info-box .quote {
         font-size: 22px;
         font-weight: 500;
@@ -126,10 +134,9 @@
         text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
     }
 
-    /* Responsive */
     @media (max-width: 1200px) {
         .main-content { flex-direction: column; gap: 30px; }
-        .info-box, .video-container { flex: none; width: 100%; height: 400px; }
+        .info-box, .video-container { flex: none; width: 100%; height: 400px; order: 0; }
         .top-bar { flex-wrap: wrap; gap: 15px; padding: 15px 20px; font-size: 16px; }
     }
 </style>
@@ -149,13 +156,7 @@
     <!-- Main content -->
     <div class="main-content">
 
-        <!-- Left video container -->
-        <div class="video-container">
-            <!-- Replace src with your video URL -->
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
-        </div>
-
-        <!-- Right info box -->
+        <!-- Info text left -->
         <div class="info-box">
             <h1>Welcome back, {{ request.user.username }} ✨</h1>
             <h2>Why FlyClix is the best</h2>
@@ -164,16 +165,20 @@
             <p>We help you grow, stay motivated, and inspire others. FlyClix is more than videos; it's a community where your passion shines.</p>
         </div>
 
+        <!-- Video right -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+
     </div>
 
 </div>
 
 <script>
-    // Animate top bar after 1 second
     window.addEventListener('load', () => {
         setTimeout(() => {
             document.getElementById('topBar').classList.add('show');
-        }, 1000);
+        }, 500);
     });
 </script>
 
